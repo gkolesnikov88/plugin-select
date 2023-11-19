@@ -3,7 +3,7 @@ const getTemplate = (data = [], placeholder) => {
 
     const items = data.map(item => {
         return `
-            <li class="select__item" data-type="item" data-value="${item.id}">
+            <li class="select__item" data-type="item" data-id="${item.id}">
                 ${item.value}
             </li>
         `;
@@ -11,7 +11,7 @@ const getTemplate = (data = [], placeholder) => {
 
     return `
         <div class="select__input" data-type="input">
-            <span>${placeholderText}</span>
+            <span data-type='placeholderText'>${placeholderText}</span>
             <i class="fa-solid fa-chevron-down" data-type="arrow"></i>
         </div>
         <div class="select__dropdown">
@@ -26,6 +26,7 @@ export class Select {
     constructor(selector, options) {
         this.$el = document.querySelector(selector);
         this.options = options;
+        this.selectedId = null;
 
         this.#render();
         this.#setup();
@@ -41,17 +42,31 @@ export class Select {
         this.clickHandler = this.clickHandler.bind(this);
         this.$el.addEventListener('click', this.clickHandler);
         this.$arrow = this.$el.querySelector('[data-type="arrow"]');
+        this.$placeholderText = this.$el.querySelector('[data-type="placeholderText"]');
     }
 
     clickHandler(event) {
         const { type } = event.target.dataset;
         if(type === "input") {
             this.toggle();
+        } else if(type === "item") {
+            const id = event.target.dataset.id;
+            this.select(id);
         }
     }
 
     get isOpen() {
         return this.$el.classList.contains('open');
+    }
+
+    get current() {
+        return this.options.data.find(item => item.id === this.selectedId);
+    }
+
+    select(id) {
+        this.selectedId = id;
+        this.$placeholderText.textContent = this.current.value;
+        this.close();
     }
 
     toggle() {
