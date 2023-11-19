@@ -15,6 +15,7 @@ const getTemplate = (data = [], placeholder, selectedId) => {
     }).join('');
 
     return `
+        <div class="select__backdrop" data-type="backdrop"></div>
         <div class="select__input" data-type="input">
             <span data-type='placeholderText'>${placeholderText}</span>
             <i class="fa-solid fa-chevron-down" data-type="arrow"></i>
@@ -57,6 +58,8 @@ export class Select {
         } else if(type === "item") {
             const id = event.target.dataset.id;
             this.select(id);
+        } else if(type === "backdrop") {
+            this.close();
         }
     }
 
