@@ -77,6 +77,9 @@ export class Select {
         this.$el.querySelectorAll(`[data-type="item"]`).forEach(el => 
             el.classList.remove('selected'));
         this.$el.querySelector(`[data-id="${id}"]`).classList.add('selected');
+        
+        this.options.onSelect ? this.options.onSelect(this.current) : null; 
+        
         this.close();
     }
 

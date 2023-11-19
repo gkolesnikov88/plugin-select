@@ -12,7 +12,10 @@ const select = new Select('#select', {
         {id: '5', value: 'Nest'},
         {id: '6', value: 'React Native'},
         {id: '7', value: 'Deno'},
-    ]
+    ],
+    onSelect(item) {
+        console.log('Selcted item', item);
+    }
 });
 
 
